@@ -1,20 +1,43 @@
-export function routeCommand(command) {
-  const text = command.trim();
+import { understandCommand } from "./masterAI.js";
 
-  if (!text) {
-    return {
-      success: false,
-      error: "Command cannot be empty."
-    };
+export function routeCommand(command) {
+  const analysis = understandCommand(command);
+
+  if (!analysis.success) {
+    return analysis;
   }
 
-  // Phase 0 stub.
-  // Real agents will be added in later phases.
+  switch (analysis.intent) {
+    case "ask_ai":
+      return {
+        success: true,
+        routed: true,
+        agent: "claudeAgent",
+        analysis
+      };
 
-  return {
-    success: true,
-    status: "stub",
-    message: "Command received. Tool routing is not implemented yet.",
-    command: text
-  };
+    case "github_action":
+      return {
+        success: true,
+        routed: true,
+        agent: "githubAgent",
+        analysis
+      };
+
+    case "whatsapp_action":
+      return {
+        success: true,
+        routed: true,
+        agent: "whatsappAgent",
+        analysis
+      };
+
+    default:
+      return {
+        success: true,
+        routed: false,
+        agent: null,
+        analysis
+      };
+  }
 }
