@@ -1,6 +1,10 @@
 import { understandCommand } from "./masterAI.js";
 
-export function routeCommand(command) {
+import { claudeAgent } from "./agents/claudeAgent.js";
+import { githubAgent } from "./agents/githubAgent.js";
+import { whatsappAgent } from "./agents/whatsappAgent.js";
+
+export async function routeCommand(command) {
   const analysis = understandCommand(command);
 
   if (!analysis.success) {
@@ -9,35 +13,21 @@ export function routeCommand(command) {
 
   switch (analysis.intent) {
     case "ask_ai":
-      return {
-        success: true,
-        routed: true,
-        agent: "claudeAgent",
-        analysis
-      };
+      return await claudeAgent(analysis);
 
     case "github_action":
-      return {
-        success: true,
-        routed: true,
-        agent: "githubAgent",
-        analysis
-      };
+      return await githubAgent(analysis);
 
     case "whatsapp_action":
-      return {
-        success: true,
-        routed: true,
-        agent: "whatsappAgent",
-        analysis
-      };
+      return await whatsappAgent(analysis);
 
     default:
       return {
         success: true,
         routed: false,
         agent: null,
-        analysis
+        analysis,
+        message: "No agent is available for this command yet."
       };
   }
 }

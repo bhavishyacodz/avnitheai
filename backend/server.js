@@ -23,10 +23,10 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-app.post("/api/command", (req, res) => {
+app.post("/api/command", async (req, res) => {
   const { command } = req.body;
 
-  const result = routeCommand(command || "");
+  const result = await routeCommand(command || "");
 
   res.json(result);
 });
