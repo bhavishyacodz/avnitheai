@@ -19,8 +19,11 @@ export async function routeCommand(command) {
       return await githubAgent(analysis);
 
     case "whatsapp_action":
-      return await whatsappAgent(analysis);
-
+  return await whatsappAgent({
+    ...analysis,
+    to: analysis.to,
+    message: analysis.message
+  });
     default:
       return {
         success: true,
