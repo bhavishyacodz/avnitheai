@@ -10,9 +10,17 @@ export function isWhatsAppConfigured() {
   );
 }
 
-export async function sendWhatsAppMessage(to) {
+export async function sendWhatsAppMessage(to, message) {
   if (!isWhatsAppConfigured()) {
     throw new Error("WhatsApp API is not configured.");
+  }
+
+  if (!to) {
+    throw new Error("WhatsApp recipient number is required.");
+  }
+
+  if (!message) {
+    throw new Error("WhatsApp message is required.");
   }
 
   const url =
@@ -20,19 +28,18 @@ export async function sendWhatsAppMessage(to) {
 
   const response = await fetch(url, {
     method: "POST",
+
     headers: {
       "Authorization": `Bearer ${ACCESS_TOKEN}`,
       "Content-Type": "application/json"
     },
+
     body: JSON.stringify({
       messaging_product: "whatsapp",
       to,
-      type: "template",
-      template: {
-        name: "hello_world",
-        language: {
-          code: "en_US"
-        }
+      type: "text",
+      text: {
+        body: message
       }
     })
   });
@@ -41,7 +48,8 @@ export async function sendWhatsAppMessage(to) {
 
   if (!response.ok) {
     throw new Error(
-      data?.error?.message || "WhatsApp API request failed."
+      data?.error?.message ||
+      "WhatsApp API request failed."
     );
   }
 
