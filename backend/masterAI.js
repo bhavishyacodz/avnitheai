@@ -10,7 +10,46 @@ export function understandCommand(command) {
 
   const lower = text.toLowerCase();
 
-  // Ask an AI something
+  // WhatsApp command
+  if (lower.includes("whatsapp")) {
+    const phoneMatch = text.match(/(?:\+?\d[\d\s-]{9,}\d)/);
+
+    if (!phoneMatch) {
+      return {
+        success: false,
+        error: "WhatsApp phone number not found."
+      };
+    }
+
+    const phone = phoneMatch[0].replace(/[^\d+]/g, "");
+
+    const messageMatch = text.match(
+      /message\s+(?:"([^"]+)"|'([^']+)'|(.+?))\s+(?:to|for)\s+\+?\d/i
+    );
+
+    if (!messageMatch) {
+      return {
+        success: false,
+        error: 'Message not found. Use: Send WhatsApp message "Hello" to +91XXXXXXXXXX'
+      };
+    }
+
+    const message =
+      messageMatch[1] ||
+      messageMatch[2] ||
+      messageMatch[3];
+
+    return {
+      success: true,
+      intent: "whatsapp_action",
+      action: "send_message",
+      to: phone,
+      message: message.trim(),
+      task: text
+    };
+  }
+
+  // Claude / AI command
   if (
     lower.includes("ask claude") ||
     lower.includes("ask ai") ||
@@ -24,7 +63,7 @@ export function understandCommand(command) {
     };
   }
 
-  // GitHub-related command
+  // GitHub command
   if (
     lower.includes("github") ||
     lower.includes("repository") ||
@@ -38,21 +77,6 @@ export function understandCommand(command) {
     };
   }
 
-  // WhatsApp-related command
-  if (
-    lower.includes("whatsapp") ||
-    lower.includes("message") ||
-    lower.includes("send a message")
-  ) {
-    return {
-      success: true,
-      intent: "whatsapp_action",
-      action: "unknown",
-      task: text
-    };
-  }
-
-  // General command
   return {
     success: true,
     intent: "unknown",
