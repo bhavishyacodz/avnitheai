@@ -1,4 +1,7 @@
-import { sendWhatsAppMessage, isWhatsAppConfigured } from "../services/whatsapp.js";
+import {
+  sendWhatsAppMessage,
+  isWhatsAppConfigured
+} from "../services/whatsapp.js";
 
 export async function whatsappAgent(request) {
   if (!isWhatsAppConfigured()) {
@@ -10,10 +13,29 @@ export async function whatsappAgent(request) {
     };
   }
 
+  if (!request.to) {
+    return {
+      success: false,
+      agent: "whatsappAgent",
+      status: "invalid_request",
+      message: "WhatsApp recipient number is missing."
+    };
+  }
+
+  if (!request.message) {
+    return {
+      success: false,
+      agent: "whatsappAgent",
+      status: "invalid_request",
+      message: "WhatsApp message is missing."
+    };
+  }
+
   try {
     const result = await sendWhatsAppMessage(
-  request.to
-);
+      request.to,
+      request.message
+    );
 
     return {
       success: true,
