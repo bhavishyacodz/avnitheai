@@ -12,9 +12,8 @@ export async function whatsappAgent(request) {
 
   try {
     const result = await sendWhatsAppMessage(
-      request.to,
-      request.message
-    );
+  request.to
+);
 
     return {
       success: true,
