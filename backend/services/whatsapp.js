@@ -10,7 +10,7 @@ export function isWhatsAppConfigured() {
   );
 }
 
-export async function sendWhatsAppMessage(to, message) {
+export async function sendWhatsAppMessage(to) {
   if (!isWhatsAppConfigured()) {
     throw new Error("WhatsApp API is not configured.");
   }
@@ -27,9 +27,12 @@ export async function sendWhatsAppMessage(to, message) {
     body: JSON.stringify({
       messaging_product: "whatsapp",
       to,
-      type: "text",
-      text: {
-        body: message
+      type: "template",
+      template: {
+        name: "hello_world",
+        language: {
+          code: "en_US"
+        }
       }
     })
   });
