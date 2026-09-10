@@ -12,10 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 
-// ==========================================
 // FRONTEND
-// ==========================================
-
 app.use(
   express.static(
     path.join(__dirname, "..", "frontend")
@@ -23,10 +20,7 @@ app.use(
 );
 
 
-// ==========================================
 // HEALTH CHECK
-// ==========================================
-
 app.get("/api/health", (req, res) => {
   res.json({
     ok: true,
@@ -36,10 +30,7 @@ app.get("/api/health", (req, res) => {
 });
 
 
-// ==========================================
 // COMMAND API
-// ==========================================
-
 app.post("/api/command", async (req, res) => {
   try {
     const { command } = req.body;
@@ -51,52 +42,32 @@ app.post("/api/command", async (req, res) => {
     res.json(result);
 
   } catch (error) {
-
     console.error("Command error:", error);
 
     res.status(500).json({
       success: false,
       error: error.message
     });
-
   }
 });
 
 
-// ==========================================
 // WHATSAPP WEBHOOK VERIFICATION
-// ==========================================
-
 app.get("/webhook", (req, res) => {
 
-  const mode =
-    req.query["hub.mode"];
-
-  const token =
-    req.query["hub.verify_token"];
-
-  const challenge =
-    req.query["hub.challenge"];
+  const mode = req.query["hub.mode"];
+  const token = req.query["hub.verify_token"];
+  const challenge = req.query["hub.challenge"];
 
   const VERIFY_TOKEN =
     process.env.WHATSAPP_VERIFY_TOKEN;
 
-  console.log(
-    "Webhook verification request received."
-  );
-
-  console.log({
-    mode,
-    tokenReceived: Boolean(token),
-    challengeReceived: Boolean(challenge)
-  });
-
+  console.log("Webhook verification request received.");
 
   if (
     mode === "subscribe" &&
     token === VERIFY_TOKEN
   ) {
-
     console.log(
       "WhatsApp webhook verified successfully."
     );
@@ -106,7 +77,6 @@ app.get("/webhook", (req, res) => {
       .send(challenge);
   }
 
-
   console.log(
     "WhatsApp webhook verification failed."
   );
@@ -115,10 +85,7 @@ app.get("/webhook", (req, res) => {
 });
 
 
-// ==========================================
 // WHATSAPP INCOMING MESSAGES
-// ==========================================
-
 app.post("/webhook", (req, res) => {
 
   console.log(
@@ -137,10 +104,7 @@ app.post("/webhook", (req, res) => {
 });
 
 
-// ==========================================
 // FRONTEND FALLBACK
-// ==========================================
-
 app.get("/{*splat}", (req, res) => {
 
   res.sendFile(
@@ -151,14 +115,10 @@ app.get("/{*splat}", (req, res) => {
       "index.html"
     )
   );
-
 });
 
 
-// ==========================================
 // START SERVER
-// ==========================================
-
 app.listen(PORT, () => {
 
   console.log(
