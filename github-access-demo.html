@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub Access Demo</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #101018; color: #f5f5fa; }
+    main { width: min(90%, 560px); padding: 2rem; box-sizing: border-box; border: 1px solid #38384b; border-radius: 18px; background: #191925; }
+    h1 { margin-top: 0; color: #ff5c8a; }
+    p { line-height: 1.6; color: #d3d3e2; }
+    button { padding: .75rem 1rem; border: 0; border-radius: 10px; background: #ff5c8a; color: #17121a; font-weight: 700; cursor: pointer; }
+    #result { margin-top: 1rem; color: #8df0bd; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>GitHub HTML Demo</h1>
+    <p>This is a simple test page. You can download this file and upload it to another repository to test your workflow.</p>
+    <button id="test">Test button</button>
+    <p id="result" aria-live="polite"></p>
+  </main>
+  <script>
+    document.querySelector('#test').addEventListener('click', () => {
+      document.querySelector('#result').textContent = 'Success — the HTML and JavaScript are working.';
+    });
+  </script>
+</body>
+</html>
