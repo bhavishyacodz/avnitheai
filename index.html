@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#120d12">
+<title>Theme 005 — Private Introductions</title>
+<style>
+:root{color-scheme:dark;--bg:#100c11;--panel:#1b141d;--line:#49303d;--pink:#ff477e;--muted:#c7b9c3;--good:#8ce7b0;--bad:#ff9b9b;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#321525 0,transparent 55%),var(--bg);color:#fff;min-height:100vh}
+.wrap{max-width:900px;margin:auto;padding:28px 16px 60px}.brand{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#ff8bad}.hero{padding:34px 0 22px}.hero h1{font-size:clamp(34px,7vw,58px);line-height:1.02;letter-spacing:-.04em;margin:12px 0}.hero p{color:var(--muted);max-width:620px;line-height:1.7}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:7px 12px;color:#f4c6d5;font-size:12px}
+.card{border:1px solid var(--line);background:rgba(27,20,29,.94);border-radius:20px;padding:22px;margin-top:16px;box-shadow:0 18px 60px #0003}
+h2{font-size:19px;margin:0 0 8px}.hint{color:var(--muted);font-size:13px;line-height:1.6;margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{display:flex;flex-direction:column;gap:7px}.full{grid-column:1/-1}label{font-size:13px;color:#f0dfe7}
+input,select,textarea{width:100%;background:#110d12;color:#fff;border:1px solid #604252;border-radius:11px;padding:12px;font:inherit;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--pink)}textarea{min-height:90px;resize:vertical}
+button{border:0;border-radius:12px;padding:13px 16px;font:inherit;font-weight:750;cursor:pointer}.primary{background:var(--pink);color:#210b14;width:100%;margin-top:14px}.secondary{background:#352331;color:#fff;border:1px solid var(--line)}button:disabled{opacity:.5;cursor:wait}
+.checks{display:grid;gap:12px;margin-top:16px}.check{display:flex;align-items:flex-start;gap:10px;color:#ddcfd7;font-size:13px;line-height:1.55}.check input{width:auto;margin-top:4px;accent-color:var(--pink)}
+.notice{border:1px solid #664154;background:#291923;border-radius:12px;padding:12px;color:#e9d5df;font-size:13px;line-height:1.6;margin:14px 0}
+.status{white-space:pre-wrap;line-height:1.6;font-size:14px;margin-top:14px}.ok{color:var(--good)}.err{color:var(--bad)}.authgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.small{font-size:12px;color:var(--muted);line-height:1.6}
+footer{color:#9f8b98;font-size:12px;line-height:1.7;margin-top:22px}
+@media(max-width:620px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.card{padding:17px}.authgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="brand">THEME 005 · PRIVATE INTRODUCTIONS</div>
+  <section class="hero">
+    <span class="pill">18+ only · Consent-first</span>
+    <h1>Meet with<br>more intention.</h1>
+    <p>Share a few basics to request a private introduction. Your contact details are not shown to a potential match by this page. Any introduction and contact sharing must be handled with clear consent from both people.</p>
+  </section>
+
+  <section class="card" id="account">
+    <h2>1. Create your account / sign in</h2>
+    <p class="hint">Use an email you can access. If you create a new account, confirm your email before submitting a request.</p>
+    <div class="grid">
+      <div class="field full"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></div>
+      <div class="field full"><label for="password">Password (minimum 8 characters)</label><input id="password" type="password" autocomplete="current-password" minlength="8" required placeholder="At least 8 characters"></div>
+    </div>
+    <div class="authgrid" style="margin-top:12px">
+      <button class="secondary" id="signup">Create account</button>
+      <button class="secondary" id="signin">Sign in</button>
+    </div>
+    <button class="secondary" id="signout" style="display:none;margin-top:10px;width:100%">Sign out</button>
+    <div class="status" id="authStatus" role="status" aria-live="polite">Not signed in.</div>
+  </section>
+
+  <form class="card" id="requestForm">
+    <h2>2. Your introduction request</h2>
+    <p class="hint">Only adults aged 18 or older can submit a request. Please use accurate information and only share contact details you are comfortable providing to the service.</p>
+    <div class="grid">
+      <div class="field"><label for="preferred_name">First name or display name</label><input id="preferred_name" required maxlength="60" autocomplete="given-name"></div>
+      <div class="field"><label for="age">Age</label><input id="age" type="number" min="18" max="99" required inputmode="numeric"></div>
+      <div class="field"><label for="city">City</label><input id="city" required maxlength="100" value="Indore"></div>
+      <div class="field"><label for="looking_for">Interested in</label><select id="looking_for" required><option value="any">Any gender</option><option value="female">Female</option><option value="male">Male</option></select></div>
+      <div class="field"><label for="contact_method">Preferred contact method</label><select id="contact_method" required><option value="email">Email</option><option value="phone">Phone</option><option value="instagram">Instagram</option></select></div>
+      <div class="field"><label for="contact_detail">Contact detail</label><input id="contact_detail" required maxlength="160" placeholder="Email, phone, or Instagram username"></div>
+      <div class="field"><label for="availability">Availability</label><input id="availability" required maxlength="100" placeholder="e.g. weekends / evenings"></div>
+      <div class="field"><label for="preferred_area">Preferred area (optional)</label><input id="preferred_area" maxlength="100" placeholder="Area or neighbourhood"></div>
+      <div class="field full"><label for="interests">Interests</label><textarea id="interests" required maxlength="240" placeholder="A few hobbies or things you enjoy"></textarea></div>
+      <div class="field full"><label for="preferences">Other preferences (optional)</label><textarea id="preferences" maxlength="500" placeholder="Anything useful to know (avoid sensitive details)"></textarea></div>
+    </div>
+    <div class="checks">
+      <label class="check"><input id="age_confirmed" type="checkbox" required><span>I confirm that I am 18 or older.</span></label>
+      <label class="check"><input id="privacy_consent" type="checkbox" required><span>I understand my request details will be processed to review and arrange an introduction. My contact details must not be shared with a potential match without my permission.</span></label>
+      <label class="check"><input id="terms_consent" type="checkbox" required><span>I agree to follow respectful conduct, respect other people’s boundaries, and understand that submitting a request does not guarantee a match.</span></label>
+    </div>
+    <div class="notice"><strong>Payment note:</strong> The service fee is ₹99. Payment is only started after sign-in and email confirmation. Do not pay until the operator has configured and tested the payment gateway and published clear terms, refund information, and support contact details.</div>
+    <button class="primary" id="submitRequest" type="submit">Submit request · ₹99</button>
+    <div class="status" id="formStatus" role="status" aria-live="polite"></div>
+  </form>
+  <footer>Privacy-first design: no public member directory is displayed here. Never share passwords or payment secrets. This page uses a public Supabase publishable key; privileged keys must remain on the server. For emergencies or unsafe behaviour, stop contact and seek help from a trusted person or local authorities.</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+(() => {
+  const SUPABASE_URL = "https://ouagcqfximjibqjcwghe.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_92tk9hpMnRhq3STvLXiVmw_IHewILPd";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  const $ = id => document.getElementById(id);
+  let currentUser = null;
+
+  function show(id, message, kind = "") {
+    const el = $(id); el.textContent = message; el.className = "status " + kind;
+  }
+  function busy(button, on, label) {
+    button.disabled = on;
+    if (on) { button.dataset.originalText = button.textContent; button.textContent = label || "Please wait…"; }
+    else if (button.dataset.originalText) { button.textContent = button.dataset.originalText; delete button.dataset.originalText; }
+  }
+  async function refreshSession() {
+    const { data, error } = await supabase.auth.getSession();
+    currentUser = data?.session?.user || null;
+    $("signout").style.display = currentUser ? "block" : "none";
+    show("authStatus", error ? error.message : currentUser
+      ? "Signed in as " + currentUser.email + (currentUser.email_confirmed_at ? " · Email confirmed." : " · Email not confirmed yet.")
+      : "Not signed in.", error ? "err" : currentUser?.email_confirmed_at ? "ok" : "");
+  }
+  $("signup").addEventListener("click", async () => {
+    const email = $("email").value.trim(), password = $("password").value;
+    if (!email || password.length < 8) return show("authStatus", "Enter a valid email and a password of at least 8 characters.", "err");
+    busy($("signup"), true, "Creating account…");
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.href } });
+      if (error) throw error;
+      show("authStatus", data.session ? "Account created and signed in." : "Account created. Check your email and confirm it, then return here and sign in.", "ok");
+      await refreshSession();
+    } catch (e) { show("authStatus", e.message || "Could not create account.", "err"); }
+    finally { busy($("signup"), false); }
+  });
+  $("signin").addEventListener("click", async () => {
+    const email = $("email").value.trim(), password = $("password").value;
+    if (!email || !password) return show("authStatus", "Enter your email and password.", "err");
+    busy($("signin"), true, "Signing in…");
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      await refreshSession();
+    } catch (e) { show("authStatus", e.message || "Could not sign in.", "err"); }
+    finally { busy($("signin"), false); }
+  });
+  $("signout").addEventListener("click", async () => {
+    const { error } = await supabase.auth.signOut();
+    await refreshSession();
+    if (error) show("authStatus", error.message, "err");
+  });
+  supabase.auth.onAuthStateChange(() => { refreshSession(); });
+  refreshSession();
+
+  $("requestForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    const button = $("submitRequest");
+    if (!currentUser) return show("formStatus", "Please create an account or sign in first.", "err");
+    if (!currentUser.email_confirmed_at) return show("formStatus", "Please confirm your email before submitting a request.", "err");
+    const age = Number($("age").value);
+    if (!Number.isInteger(age) || age < 18 || age > 99) return show("formStatus", "This service is only for adults aged 18 or older.", "err");
+    if (!$("age_confirmed").checked || !$("privacy_consent").checked || !$("terms_consent").checked) return show("formStatus", "Please confirm the age, privacy, and terms statements.", "err");
+    const payload = {
+      preferred_name: $("preferred_name").value.trim(),
+      age,
+      city: $("city").value.trim(),
+      contact_method: $("contact_method").value,
+      contact_detail: $("contact_detail").value.trim(),
+      interests: $("interests").value.trim(),
+      looking_for: $("looking_for").value,
+      availability: $("availability").value.trim(),
+      preferred_area: $("preferred_area").value.trim(),
+      preferences: $("preferences").value.trim(),
+      age_confirmed: $("age_confirmed").checked,
+      privacy_consent: $("privacy_consent").checked,
+      terms_consent: $("terms_consent").checked
+    };
+    busy(button, true, "Preparing secure checkout…");
+    show("formStatus", "Contacting the secure payment service…");
+    try {
+      const { data, error } = await supabase.functions.invoke("create-order", { body: payload });
+      if (error) throw new Error(error.message || "Could not start checkout.");
+      if (!data || !data.order_id || !data.request_id || !data.key_id) throw new Error(data?.error || "Payment service response was incomplete.");
+      if (!window.Razorpay) throw new Error("Payment checkout did not load. Refresh the page and try again.");
+      const checkout = new Razorpay({
+        key: data.key_id,
+        amount: data.amount,
+        currency: data.currency || "INR",
+        name: "Theme 005",
+        description: "Private introduction request",
+        order_id: data.order_id,
+        prefill: { email: currentUser.email },
+        notes: { request_id: data.request_id },
+        theme: { color: "#ff477e" },
+        handler: async response => {
+          show("formStatus", "Payment submitted. Verifying payment securely…");
+          try {
+            const { data: verified, error: verifyError } = await supabase.functions.invoke("verify-payment", {
+              body: {
+                request_id: data.request_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              }
+            });
+            if (verifyError) throw new Error(verifyError.message || "Could not verify payment.");
+            if (!verified?.verified) throw new Error(verified?.error || "Payment could not be verified. Contact support with your payment ID.");
+            show("formStatus", "Request submitted and payment verified. Your request will be reviewed; a match is not guaranteed.", "ok");
+            $("requestForm").reset();
+          } catch (e) {
+            show("formStatus", "Payment verification needs attention: " + (e.message || "unknown error") + "\nKeep your payment ID: " + (response.razorpay_payment_id || "not available"), "err");
+          } finally { busy(button, false); }
+        },
+        modal: { ondismiss: () => { show("formStatus", "Checkout closed. If you completed payment, do not pay again until you check the payment status or contact support."); busy(button, false); } }
+      });
+      checkout.on("payment.failed", response => {
+        show("formStatus", "Payment failed: " + (response.error?.description || "Please try again later."), "err");
+        busy(button, false);
+      });
+      checkout.open();
+    } catch (e) {
+      show("formStatus", (e.message || "Unable to start checkout.") + "\nThe backend payment secrets may not be configured yet. No payment should be attempted until setup is complete.", "err");
+      busy(button, false);
+    }
+  });
+})();
+</script>
+</body>
+</html>
